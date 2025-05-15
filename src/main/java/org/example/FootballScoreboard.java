@@ -30,7 +30,7 @@ public class FootballScoreboard {
         String matchKey = generateMatchesStringKey(homeTeam, awayTeam);
         Match match = matches.get(matchKey);
         if (match == null) {
-            throw new IllegalArgumentException("Match not found");
+            throw new IllegalStateException("Match not found");
         }
         match.setHomeScore(homeScore);
         match.setAwayScore(awayScore);
@@ -40,7 +40,7 @@ public class FootballScoreboard {
         return matches.values().stream()
                 .sorted(Comparator
                         .comparingInt((Match m) -> m.getHomeScore() + m.getAwayScore()).reversed()
-                        .thenComparing(Match::getStartTime).reversed()
+                        .thenComparing(Match::getStartTime, Comparator.reverseOrder())
                 )
                 .collect(Collectors.toList());
     }
